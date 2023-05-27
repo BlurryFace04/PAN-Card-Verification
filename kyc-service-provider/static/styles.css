@@ -1,0 +1,90 @@
+body {
+    font-family: 'Roboto', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(180deg, rgba(157, 35, 56, 0.9) 0%, rgba(87, 8, 86, 0.9) 35%, rgba(48, 3, 44, 0.9) 90%);
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+h1, h2 {
+    color: #fff;
+    font-weight: bold;
+}
+
+.main-container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.pan-card {
+    /*background-color: rgba(75, 108, 183, 1);*/
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 1);
+    margin-bottom: 20px;
+    z-index: 1;
+}
+
+input[type="text"], input[type="date"] {
+    background-color: rgba(255, 255, 255, 1);
+    border: 1px solid rgba(0, 0, 0, 0.6);
+    border-radius: 3px;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+
+input[type="text"]::placeholder,
+input[type="date"]::placeholder {
+    color: black;
+    opacity: 1;
+}
+
+.btnn {
+  font-size: 16px;
+  font-weight: 200;
+  color: white;
+  font-weight: bold;
+  letter-spacing: 1px;
+  padding: 13px 20px 13px;
+  outline: 0;
+  border: 1px solid white;
+  cursor: pointer;
+  position: relative;
+  background-color: rgba(0, 0, 0, 0);
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.btnn:after {
+  content: "";
+  background-color: #8f225f;
+  width: 100%;
+  z-index: -1;
+  position: absolute;
+  height: 100%;
+  top: 7px;
+  left: 7px;
+  transition: 0.2s;
+}
+
+.btnn:hover:after {
+  top: 0px;
+  left: 0px;
+}
+
+@media (min-width: 768px) {
+  .button-52 {
+    padding: 13px 50px 13px;
+  }
+}
+
+.pan-card-form input:focus,
+.pan-card-form button:focus {
+    outline: none;
+}

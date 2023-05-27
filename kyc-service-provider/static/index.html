@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAN Card Verification</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid main-container">
+        <div class="container mt-5">
+            <h1 class="text-center mb-5">KYC Service Provider</h1>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card pan-card">
+                        <div class="card-body">
+                            <h2 class="card-title">CREATE</h2>
+                            <form id="createPanCardForm" class="pan-card-form"> 
+                                <input type="text" id="createPanNumber" placeholder="PAN Number" autocomplete="off" required>
+                                <input type="text" id="createName" placeholder="Name" autocomplete="off" required>
+                                <input type="date" id="createDob" placeholder="Date of Birth" required>
+                                <input type="text" id="createFatherName" placeholder="Father's Name" autocomplete="off" required>
+                                <button type="submit" class="btnn">Create PAN Card</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card pan-card">
+                        <div class="card-body">
+                            <h2 class="card-title">UPDATE</h2>
+                            <form id="updatePanCardForm" class="pan-card-form">
+                                <input type="text" id="updatePanNumber" placeholder="PAN Number" autocomplete="off" required>
+                                <input type="text" id="updateName" placeholder="Name" autocomplete="off" required>
+                                <input type="date" id="updateDob" placeholder="Date of Birth" required>
+                                <input type="text" id="updateFatherName" placeholder="Father's Name" autocomplete="off" required>
+                                <button type="submit" class="btnn">Update PAN Card</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card pan-card">
+                        <div class="card-body">
+                            <h2 class="card-title">QUERY</h2>
+                            <form id="queryForm" class="pan-card-form">
+                                <input type="text" id="queryPanNumber" placeholder="PAN Number" autocomplete="off" required>
+                                <button type="submit" class="btnn">Query PAN Card</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card pan-card">
+                        <div class="card-body">
+                            <h2 class="card-title">DELETE</h2>
+                            <form id="deleteForm" class="pan-card-form">
+                                <input type="text" id="deletePanNumber" placeholder="PAN Number" autocomplete="off" required>
+                                <button type="submit" class="btnn">Delete PAN Card</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API_URL = 'http://localhost:3000';
+
+        document.getElementById('createPanCardForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const panNumber = document.getElementById('createPanNumber').value;
+            const name = document.getElementById('createName').value;
+            const dob = document.getElementById('createDob').value;
+            const fatherName = document.getElementById('createFatherName').value;
+
+            try {
+                const response = await fetch(`${API_URL}/createPanCard`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ panNumber, name, dob, fatherName }),
+                });
+
+                if (response.ok) {
+                    alert('PAN Card created successfully.');
+                } else {
+                    throw new Error('Error creating PAN Card.');
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+        
+        document.getElementById('updatePanCardForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const panNumber = document.getElementById('updatePanNumber').value;
+            const name = document.getElementById('updateName').value;
+            const dob = document.getElementById('updateDob').value;
+            const fatherName = document.getElementById('updateFatherName').value;
+
+            try {
+                const response = await fetch(`${API_URL}/updatePanCard`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ panNumber, name, dob, fatherName }),
+                });
+
+                if (response.ok) {
+                    alert('PAN Card updated successfully.');
+                } else {
+                    throw new Error('Error updating PAN Card.');
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+
+        document.getElementById('queryForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const panNumber = document.getElementById('queryPanNumber').value;
+
+            try {
+                const response = await fetch(`${API_URL}/queryPanCard/${panNumber}`);
+
+                if (response.ok) {
+                    const data = await response.json();
+                    const message = data.message;
+
+                    // Split the message string using colon as the delimiter
+                    const [pan, name, dob, fatherName] = message.split(':');
+
+                    // Format the alert message
+                    const alertMessage = `PAN Number: ${pan}\nName: ${name}\nDate of Birth: ${new Date(dob).toLocaleDateString()}\nFather's Name: ${fatherName}`;
+                    alert(alertMessage); // Show the formatted alert message
+                } else {
+                    throw new Error('Error querying PAN Card.');
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+
+        document.getElementById('deleteForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const panNumber = document.getElementById('deletePanNumber').value;
+            try {
+                const response = await fetch(`${API_URL}/deletePanCard/${panNumber}`, {
+                    method: 'DELETE',
+                });
+                
+                if (response.ok) {
+                    alert('PAN Card deleted successfully.');
+                } else {
+                    throw new Error('Error deleting PAN Card.');
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>
+
