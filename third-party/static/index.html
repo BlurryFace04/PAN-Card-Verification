@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAN Card Verification</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container-fluid main-container">
+        <div class="container mt-5">
+            <h1 class="text-center mb-5">Third Party</h1>
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card pan-card">
+                        <div class="card-body">
+                            <h2 class="card-title">VERIFY</h2>
+                            <form id="verifyPanCardForm" class="pan-card-form"> 
+                                <input type="text" id="verifyPanNumber" placeholder="PAN Number" autocomplete="off" required>
+                                <input type="text" id="verifyName" placeholder="Name" autocomplete="off" required>
+                                <input type="date" id="verifyDob" placeholder="Date of Birth" required>
+                                <input type="text" id="verifyFatherName" placeholder="Father's Name" autocomplete="off" required>
+                                <button type="submit" class="btnn">Verify PAN Card</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API_URL = 'http://localhost:4000';
+
+        document.getElementById('verifyPanCardForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const panNumber = document.getElementById('verifyPanNumber').value;
+            const name = document.getElementById('verifyName').value;
+            const dob = document.getElementById('verifyDob').value;
+            const fatherName = document.getElementById('verifyFatherName').value;
+
+            try {
+                const response = await fetch(`${API_URL}/verifyPanCard`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ panNumber, name, dob, fatherName }),
+                });
+
+                if (response.ok) {
+                    alert('PAN Card verified successfully.');
+                } else {
+                    throw new Error('Error verifying PAN Card.');
+                }
+            } catch (error) {
+                alert(error.message);
+            }
+        });
+    </script>
+</body>
+</html>
+
